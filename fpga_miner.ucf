@@ -1,0 +1,38 @@
+##############################################################################
+# LOGI Pi UCF File For fpga_miner
+##############################################################################
+
+######################
+# Timing Constraints #
+######################
+
+NET "clk" TNM_NET = clk;
+TIMESPEC TS_clk = PERIOD "clk" 50 MHz HIGH 50%;
+
+##############################################################################
+# Pin LOC Constraints #
+##############################################################################
+
+NET "clk"      			LOC = "P85" 		| IOSTANDARD = LVTTL;
+
+#Peripherals#############################################################
+NET "led<0>"     			LOC = "P105" 		| IOSTANDARD = LVTTL;		#SHARED WITH ARD_D6
+NET "led<1>"      		LOC = "P104" 		| IOSTANDARD = LVTTL;		#SHARED WITH ARD_D7
+#NET "PB<0>"        		LOC = "P102" 		| IOSTANDARD = LVTTL;
+#NET "PB<1>"        		LOC = "P101" 		| IOSTANDARD = LVTTL;
+#NET "SW<0>"        		LOC = "P99" 		| IOSTANDARD = LVTTL;
+#NET "SW<1>"        		LOC = "P100" 		| IOSTANDARD = LVTTL;
+	
+#RASPBERRY-PI CONNECTOR###############################################################
+#NET "spi_mosi" 			LOC = "P65"			| IOSTANDARD = LVTTL;			#Shared - Used to send data to fpga / ARduino MOSI
+#NET "spi_miso" 			LOC = "P75"			| IOSTANDARD = LVTTL;			#Shared - Used to recieve data from fpga / ARduino MOSI
+#NET "spi_sck"				LOC = "P70" 		| IOSTANDARD = LVTTL;			#Shared - Used to clk bitstream data to fpga / ARduino SCK
+#NET "spi_ss"				LOC = "P79" 		| IOSTANDARD = LVTTL;			#Shared - Used to signal data from fpga / ARduino is ready to send/receive
+
+#========================================================
+# UART for Rpi
+# TX = FGPA TX  = Host RX				
+# RX = FPGA RX  = Host TX				
+#========================================================
+NET "pi_tx" 				LOC= "P83" 			| IOSTANDARD = LVTTL;			#Pi output FPGA input
+NET "pi_rx" 				LOC= "P82" 			| IOSTANDARD = LVTTL;			#Pi input FPGA output
