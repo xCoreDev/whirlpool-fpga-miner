@@ -2,9 +2,8 @@
 Implementation Of A FPGA Miner Using The Whirlpool Hashing Algorithm
 
 
-The Master version is configured for the LOGI Pi FPGA pins using a Spartan9 chip.
-To build this version, you will need at least 60K LUTs (such as an LX150 board)
+This branch is for the Spartan9 LX9 chip (approx 5720 LUTs, 1430 Slices).
 
-2 Branches have been created
-  - Branch 1 For the LX9 chip
-  - Branch 2 For chips between the LX9 and LX150 that use a paramater to adjust the area
+The latest change switches the Theta calculations (matrix multiplication using GF(256)) to XOR at the bit level instead of the byte level.
+
+TODO: Determine if low level calls (i.e. call the LUT6 logic directly) can be made to reduce the area enough to increase throughput.
