@@ -37,18 +37,17 @@ module work_handler (
 
 	reg [31:0] hash_xor;
 	reg [31:0] nonce, result;
-	reg rst, hash_enabled, new_res;
+	reg hash_enabled, new_res;
 
 	initial begin
 		hash_enabled = 1'b0;
 		result = 32'd0;
 		new_res = 1'b0;
-		rst = 1'b0;
 	end
 
 	assign block = {header, nonce, 8'h80, 360'd0, 16'h0280};;	// Add Nonce To Supplied Header
 
-	whirlpool whirlpool ( clk, rst, block, midstate, hash_ready, hash );
+	whirlpool whirlpool ( clk, new_work, block, midstate, hash_ready, hash );
 
 	assign result_data = result;
 	assign new_result = new_res;
@@ -57,8 +56,7 @@ module work_handler (
 	always @(posedge clk) begin
 
 		new_res = 1'b0;
-		result = 32'h00000000;
-		rst = new_work;
+		result = 32'd0;
 		
 		// When New Work Arrives, Reset All Values
 		if (new_work) begin
@@ -68,7 +66,7 @@ module work_handler (
 		end 
 		else if (hash_enabled) begin
 		
-			if (hash_ready) begin							// Because Multiple Cycles Are Used, Wait For Hash To Complete
+			if (hash_ready) begin // Because Multiple Cycles Are Used, Wait For Hash To Complete
 			
 				// XOR The Whirlpool Hash To Itself Offset By 128 Bits (Only 32 Bits Required For Target Check)
 				hash_xor = {hash[263:256] ^ hash[135:128],
@@ -76,26 +74,23 @@ module work_handler (
 								hash[279:272] ^ hash[151:144],
 								hash[287:280] ^ hash[159:152]};
 
-//				$display("\n\tHash:  %x\n\tHashx: %x\n", hash, hash_xor);
-
-				if (hash_xor <= target) begin				// Check If A Nonce Was Found On Prior Hash
+				// Check If A Nonce Was Found On Prior Hash
+				if (hash_xor <= target) begin
 					new_res = 1'b1;
 					result = nonce;
 				end
 
-				else if (nonce == nonce_end) begin		// Check If All Nonces Have Been Used
+				// Turn Off Hashing Once All Nonces Have Been Checked
+				if (nonce == nonce_end) begin
 					hash_enabled = 1'b0;
-					new_res = 1'b1;
-					result = nonce;
 				end
 
-				nonce = nonce + 1'b1;
+				nonce = nonce + 32'd1;
+
+//				$display("\n\tHash:  %x\n\tHashx: %x\n\tResult: %d\n", hash, hash_xor, result);
 
 			end
 		end
-
-//		$display ("Nonce: %d, Ready: %d, State: %x, Block: %x, New Work: %d, Enabled: %d, Hashing: %d, New Result: %d, Result: %d", nonce, hash_ready, midstate[511:480], block[159:128], new_work, hash_enabled, hashing, new_res, result);
-
 	end
 
 endmodule
