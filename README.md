@@ -13,7 +13,7 @@ To build cgminer yourself, follow the ReadMe.txt instructions in zip file at the
 
     https://www.dropbox.com/s/74hqrffsgz8bwre/cgminer_code.zip?dl=0
 
-I have also provided the cgminer binaries I build on a Windows 7 64 bit PC.  This may not work on other versions of Windows and may not work if you don't have the correct drivers installed.  To install, follow the ReadMe.txt instructions in zip file at the following location:
+I have also provided the cgminer binaries I built on a Windows 7 64 bit PC.  This may not work on other versions of Windows and may not work if you don't have the correct drivers installed.  To install, follow the ReadMe.txt instructions in zip file at the following location:
 
-    https://www.dropbox.com/s/74hqrffsgz8bwre/cgminer_code.zip?dl=0
+    https://www.dropbox.com/s/wouvorzb5e4ru27/cgminer_binaries.zip?dl=0
 
